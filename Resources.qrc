@@ -1,0 +1,32 @@
+<RCC>
+    <qresource prefix="/Images">
+        <file>Gubi.png</file>
+        <file>Thermometer.png</file>
+    </qresource>
+    <qresource prefix="/qmlFiles">
+        <file>TopPanel.qml</file>
+        <file>MiddleLayout.qml</file>
+        <file>SideMenu.qml</file>
+        <file>RotationPanel.qml</file>
+        <file>MidPanel1.qml</file>
+        <file>GaugePanel.qml</file>
+        <file>Gauge1.qml</file>
+        <file>MapHandler.qml</file>
+        <file>MapPanel.qml</file>
+        <file>PlotPanel.qml</file>
+        <file>BottomPanel.qml</file>
+        <file>ConfigurePage.qml</file>
+        <file>GridRectAux.qml</file>
+        <file>SerialConfigPage.qml</file>
+        <file>SettingConfig.qml</file>
+        <file>OtherSettings.qml</file>
+        <file>MultiPlotComp.qml</file>
+    </qresource>
+    <qresource prefix="/RadialBar">
+        <file>RadialBarShape.qml</file>
+    </qresource>
+    <qresource prefix="/jsFiles">
+        <file>mainAuxFunctions.js</file>
+    </qresource>
+    <qresource prefix="/"/>
+</RCC>
