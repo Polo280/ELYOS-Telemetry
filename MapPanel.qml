@@ -1,6 +1,8 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
+import QtLocation 5.15
+import QtPositioning 5.15
 import "qrc:/jsFiles/mainAuxFunctions.js" as AuxFunctionsJs
 
 ///////////// MAP PANEL  /////////////
@@ -56,11 +58,45 @@ Rectangle {
             // Style
             color: "#363638"
             radius: 5
-            border.color: "red"
             border.width: 1
+            clip: true
 
-            // Map Component
-            MapHandler{}
+            /////////// OFFLINE MAP COMPONENT ///////////
+            Map {
+                id: map
+                width: Math.sqrt(Math.pow(parent.width, 2) + Math.pow(parent.height, 2))
+                height: width
+                anchors.centerIn: parent
+                activeMapType: map.supportedMapTypes[0]
+                zoomLevel: 15
+
+                center: QtPositioning.coordinate(39.795017, -86.234566) // Center the map on this location
+
+                plugin: Plugin {
+                    name: 'osm';
+                    PluginParameter {
+                        name: 'osm.mapping.offline.directory'
+                        value: ':/offline_tiles/'
+                        // value: "C:/Users/jorgl/OneDrive/Escritorio/OfficialMap/offline_tiles"
+                    }
+
+                    // PluginParameter {
+                    //     name: "osm.mapping.cache.directory"
+                    //     value: "C:/Users/jorgl/OneDrive/Escritorio/OfficialMap/offline_tiles"
+                    // }
+
+                    PluginParameter {
+                      name: "osm.mapping.providersrepository.disabled"
+                      value: true
+                   }
+                }
+
+                transform: Rotation{
+                    angle: -90
+                    origin.x: map.width / 2
+                    origin.y: map.height / 2
+                }
+            }
         }
 
         //////////// MAP PANEL BOTTOM  ////////////
@@ -394,7 +430,7 @@ Rectangle {
 
                                         // Define behaviors on clicked
                                         onClicked: {
-                                            console.log("Map button clicked!");
+                                            // console.log("Map button clicked!");
                                             if (model.buttonText === "NEW LAP") {
                                                 lapButtonClicked()
                                             } else if (model.buttonText === "PAUSE") {

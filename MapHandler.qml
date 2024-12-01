@@ -96,29 +96,29 @@ Rectangle {
     //! [PlaceSearchModel]
 
     //! [Places MapItemView]
-    Map {
-        id: map
-        anchors.fill: parent
-        plugin: myPlugin;
-        center: locationOslo
-        zoomLevel: 15.4
-        bearing: 90
+    // Map {
+    //     id: map
+    //     anchors.fill: parent
+    //     plugin: myPlugin;
+    //     center: locationOslo
+    //     zoomLevel: 15.4
+    //     bearing: 90
 
-        MapItemView {
-            model: searchModel
-            delegate: MapQuickItem {
-                coordinate: place.location.coordinate
+    //     MapItemView {
+    //         model: searchModel
+    //         delegate: MapQuickItem {
+    //             coordinate: place.location.coordinate
 
-                // anchorPoint.x: image.width * 0.5
-                // anchorPoint.y: image.height
+    //             // anchorPoint.x: image.width * 0.5
+    //             // anchorPoint.y: image.height
 
-                sourceItem: Column {
-                    // Image { id: image; source: "qrc:/resources/map/marker.png" }
-                    Text { text: title; font.bold: true }
-                }
-            }
-        }
-    }
+    //             sourceItem: Column {
+    //                 // Image { id: image; source: "qrc:/resources/map/marker.png" }
+    //                 Text { text: title; font.bold: true }
+    //             }
+    //         }
+    //     }
+    // }
     //! [Places MapItemView]
 
     Connections {

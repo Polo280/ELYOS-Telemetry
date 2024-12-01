@@ -19,7 +19,7 @@ Window {
     visible: true
     opacity: 0.98
     color: "#272727"
-    title: qsTr("ELYOS Telemetry")
+    title: qsTr("ELYOS")
 
     ////// Define App Variables //////
     // General control
