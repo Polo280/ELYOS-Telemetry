@@ -28,15 +28,15 @@ Rectangle {
         target: SerialHandler
 
         onConnected:{
-            console.log("Succesfully connected")
+            // console.log("Succesfully connected")
             successfulConnection()
         }
         onDisconnected:{
-            console.log("Disconnected")
+            // console.log("Disconnected")
             successfulDisconnection()
         }
         onErrorOccurred:{
-            console.log("Some error thrown")
+            // console.log(errorMessage)
         }
     }
 
@@ -98,7 +98,7 @@ Rectangle {
                 GridRectAux{
                     compRowSpan: 18; compColumnSpan: 30
                     color: configurePanel.panelColor
-                }   
+                }
                 ////////////////////////////////////////////////
             }
         }

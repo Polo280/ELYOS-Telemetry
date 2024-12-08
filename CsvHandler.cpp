@@ -24,11 +24,10 @@ void CsvHandler::openCsv(QString path){
 
     // Associate writer with file manager
     this->writer = new QTextStream(this->file_manager);
-    *this->writer << "Hello\n";
 }
 
-void CsvHandler::csvWrite(){
-    return;
+void CsvHandler::csvWrite(QString message){
+    *this->writer << message;
 }
 
 void CsvHandler::handleError(){

@@ -13,7 +13,7 @@ public:
     ~CsvHandler(void);
 
     Q_INVOKABLE void openCsv(QString path);
-    Q_INVOKABLE void csvWrite();
+    Q_INVOKABLE void csvWrite(QString message);
 
 signals:
     void csvOpenSuccess(void);

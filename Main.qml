@@ -14,6 +14,7 @@ import SerialHandler
 import CsvHandler
 // Global variables
 import "qrc:/jsFiles/Globals.js" as GlobalsJs
+import "qrc:/jsFiles/mainAuxFunctions.js" as AuxFunctionsJs
 
 Window {
     /////// BASIC WINDOW PROPERTIES ///////
@@ -34,7 +35,7 @@ Window {
     property bool finishedRace: false
     // Race settings
     property int maxNumberLaps: 5
-    property int attemptAvailableSecs: 620
+    property int attemptAvailableSecs: 1200
     // Current Status
     property int remainingTime: attemptAvailableSecs
     property int lapTimeAux: 0
@@ -225,10 +226,24 @@ Window {
             topPanelItem.hourText = Qt.formatTime(date, "hh:mm:ss");
             // App total run time update
             timeRunning += 1;
+
+            // Check data gather conditions (register received data in internal lists)
+            GlobalsJs.get_data_en = (isConnected && !timePaused);
+
             // Remaining time update (if not paused)
             if(!timePaused && !finishedRace){
                 timeRunningAttempt += 1;
                 remainingTime = (remainingTime === 0)? 0 : remainingTime - 1;
+
+                // Check if AUTOSAVE interval (to csv) has ellapsed
+                if(isConnected && timeRunning - GlobalsJs.autosave_time_aux >= GlobalsJs.autosave_time_secs){
+                    GlobalsJs.ready_to_save = true;
+                    GlobalsJs.autosave_time_aux = timeRunning;
+                }
+
+            }else{
+                // Reset interval counter if app is paused or not available
+                GlobalsJs.autosave_time_aux = timeRunning;
             }
         }
     }
@@ -277,9 +292,30 @@ Window {
             orientationAngles = orientAngles;
 
             // Append data into record lists (ADJUST INDEXES AS NEEDED)
-            GlobalsJs.speed_record.push(dataValues[6]); // Make some calculation here?
-            GlobalsJs.current_record.push(dataValues[8]);
-            GlobalsJs.voltage_record.push(dataValues[9]);
+            if(GlobalsJs.get_data_en){
+                GlobalsJs.speed_record.push(dataValues[6]); // Make some calculation here?
+                GlobalsJs.current_record.push(dataValues[8]);
+                GlobalsJs.voltage_record.push(dataValues[9]);
+            }else{
+                // If get data is not enabled, discard the data that has been already stored
+                GlobalsJs.speed_record = [];
+                GlobalsJs.current_record = [];
+                GlobalsJs.voltage_record = [];
+            }
+
+            // Check if data is ready to be stored
+            if(GlobalsJs.ready_to_save){
+                console.log("Ready")
+                // The order of the sublists has to be the same as you want to store in the CSV
+                GlobalsJs.main_data_store = [GlobalsJs.speed_record, GlobalsJs.current_record, GlobalsJs.voltage_record];
+                GlobalsJs.speed_record = [];
+                GlobalsJs.current_record = [];
+                GlobalsJs.voltage_record = [];
+                // Convert to string and save to CSV constantly
+                CsvHandler.csvWrite(AuxFunctionsJs.convertToCsv(GlobalsJs.main_data_store));
+                // Reset control variable
+                GlobalsJs.ready_to_save = false;
+            }
         }
     }
 
@@ -289,16 +325,17 @@ Window {
         target: CsvHandler
 
         onCsvOpenSuccess: {
-            console.log("Open success!");
+            // console.log("Open success!");
         }
 
         onCsvOpenFailure: {
-           console.log("Failed to open csv") ;
+           // console.log("Failed to open csv") ;
         }
     }
 
+    // When App starts, set the CSV path and write the header
     Component.onCompleted: {
         CsvHandler.openCsv("C:/Users/jorgl/OneDrive/Escritorio/testqt.csv");
-
+        CsvHandler.csvWrite("Speed,Current,Voltage\n")
     }
 }

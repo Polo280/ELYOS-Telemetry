@@ -59,7 +59,7 @@ Rectangle {
                     anchors.fill: parent
                     hoverEnabled: true
                     onClicked: {
-                        console.log("Menu button clicked!")
+                        // console.log("Menu button clicked!")
                         menuButtonClicked()  // Emit signal
                     }
                 }
@@ -225,9 +225,9 @@ Rectangle {
     // Change the color of remaining Time label
     onAttemptRemainingSecsChanged: {
             // Logic to change the color based on remaining seconds
-            if(attemptRemainingSecs >= 600){
+            if(attemptRemainingSecs >= 800){
                 remainingTimeText.color =  "Green";
-            }else if (attemptRemainingSecs >= 300){
+            }else if (attemptRemainingSecs >= 400){
                 remainingTimeText.color = "#fad20c";
             }else if (attemptRemainingSecs > 0){
                 remainingTimeText.color = "Red";
