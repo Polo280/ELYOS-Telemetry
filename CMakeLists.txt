@@ -27,7 +27,7 @@ qt_add_qml_module(appTelemetry2
     RESOURCES MidPanel1.qml
     RESOURCES GaugePanel.qml
     RESOURCES PlotPanel.qml
-    RESOURCES MultiPlotComp.qml
+    RESOURCES RT_Chart.qml
     RESOURCES SideMenu.qml
     RESOURCES RotationPanel.qml
     RESOURCES MapHandler.qml
@@ -46,6 +46,8 @@ qt_add_qml_module(appTelemetry2
     SOURCES radialbar.cpp
     SOURCES Headers/SerialHandler.h
     SOURCES SerialHandler.cpp
+    SOURCES Headers/CsvHandler.hpp
+    SOURCES CsvHandler.cpp
 
     RESOURCES Gubi.png
     RESOURCES Thermometer.png

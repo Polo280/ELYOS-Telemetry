@@ -269,7 +269,7 @@ Rectangle {
                                 }else if(model.tag === "voltage"){
                                    performanceValues[model.index] + " V"
                                 }else if (model.tag === "RPM"){
-                                    performanceValues[model.index] + " RPM"
+                                    Math.floor(performanceValues[model.index]) + " RPM"
                                 }else if(model.tag === "consumption"){
                                    performanceValues[model.index] + " kWh"
                                 }else if(model.tag === "efficiency"){

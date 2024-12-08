@@ -80,8 +80,8 @@ Rectangle {
                     // border.width: 1
 
                     ////// PLOT COMPONENT //////
-                    MultiPlotComp{
-                        id: multiplot1
+                    RT_Chart{
+
                     }
                 }
             }

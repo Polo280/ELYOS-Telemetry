@@ -21,12 +21,14 @@
         <file>SettingConfig.qml</file>
         <file>OtherSettings.qml</file>
         <file>MultiPlotComp.qml</file>
+        <file>RT_Chart.qml</file>
     </qresource>
     <qresource prefix="/RadialBar">
         <file>RadialBarShape.qml</file>
     </qresource>
     <qresource prefix="/jsFiles">
         <file>mainAuxFunctions.js</file>
+        <file>Globals.js</file>
     </qresource>
     <qresource prefix="/">
         <file>offline_tiles/osm_100-l-1-14-4266-6213.png</file>

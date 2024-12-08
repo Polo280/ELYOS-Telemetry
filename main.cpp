@@ -2,12 +2,20 @@
 #include <QQmlApplicationEngine>
 #include "Headers/radialbar.h"
 #include "Headers/SerialHandler.h"
+#include "Headers/CsvHandler.hpp"
 
 static QObject *serialHandlerSingletonProvider(QQmlEngine *engine, QJSEngine *scriptEngine) {
     Q_UNUSED(engine)
     Q_UNUSED(scriptEngine)
 
     return new SerialHandler();
+}
+
+static QObject *csvHandlerSingletonProvider(QQmlEngine *engine, QJSEngine *scriptEngine) {
+    Q_UNUSED(engine)
+    Q_UNUSED(scriptEngine)
+
+    return new CsvHandler();
 }
 
 int main(int argc, char *argv[])
@@ -21,6 +29,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<RadialBar>("CustomControls", 1, 0, "RadialBar");
     // Serial handler component (a single instance in all the project)
     qmlRegisterSingletonType<SerialHandler>("SerialHandler", 1, 0, "SerialHandler", serialHandlerSingletonProvider);
+    qmlRegisterSingletonType<CsvHandler>("CsvHandler", 1, 0, "CsvHandler", csvHandlerSingletonProvider);
 
     QObject::connect(
         &engine,

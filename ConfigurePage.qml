@@ -109,7 +109,6 @@ Rectangle {
 
         /////////////////////  OTHER CONFIG LAYOUT /////////////////////
         OtherSettings{
-
         }
     }
 

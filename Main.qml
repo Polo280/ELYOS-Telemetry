@@ -11,6 +11,9 @@ import QtPositioning 5.15
 // Custom QMLs
 import "."  // Include same folder (imports are managed with folders)
 import SerialHandler
+import CsvHandler
+// Global variables
+import "qrc:/jsFiles/Globals.js" as GlobalsJs
 
 Window {
     /////// BASIC WINDOW PROPERTIES ///////
@@ -255,6 +258,7 @@ Window {
             let performanceVals = [0.0, 0.0, 0.0, 0.0, 0.0];  // It seems like elements of the array cant be changed individually inside this block
             let accels = [0.0, 0.0, 0.0];
             let orientAngles = [0.0, 0.0, 0.0];
+            // Adjust this depending on telemetry data format (first item is j ust a validation character (s))
             speed = dataValues[2];
             distance = dataValues[3];
             performanceVals[0] = dataValues[8];  // Current
@@ -271,6 +275,30 @@ Window {
             orientAngles[1] = dataValues[10];
             orientAngles[2] = dataValues[11];
             orientationAngles = orientAngles;
+
+            // Append data into record lists (ADJUST INDEXES AS NEEDED)
+            GlobalsJs.speed_record.push(dataValues[6]); // Make some calculation here?
+            GlobalsJs.current_record.push(dataValues[8]);
+            GlobalsJs.voltage_record.push(dataValues[9]);
         }
+    }
+
+    //////////////////// CSV MANAGER ////////////////////
+    Connections {
+        id: csvHandle_conn
+        target: CsvHandler
+
+        onCsvOpenSuccess: {
+            console.log("Open success!");
+        }
+
+        onCsvOpenFailure: {
+           console.log("Failed to open csv") ;
+        }
+    }
+
+    Component.onCompleted: {
+        CsvHandler.openCsv("C:/Users/jorgl/OneDrive/Escritorio/testqt.csv");
+
     }
 }

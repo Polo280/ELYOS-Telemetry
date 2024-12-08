@@ -1,4 +1,4 @@
-.pragma library
+.pragma library  // Ensures it is managed as singleton instance
 console.log("JS file loaded");
 
 // Format a number of seconds in min:secs
