@@ -1,0 +1,5 @@
+module Telemetry2
+typeinfo appTelemetry2.qmltypes
+prefer :/Telemetry2/
+Main 1.0 Main.qml
+

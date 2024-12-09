@@ -1,0 +1,3 @@
+C:/Users/jorgl/OneDrive/Escritorio/ELYOS-Telemetry/build/appTelemetry2_autogen/include/../D2MWKIZDYH/moc_CsvHandler.cpp.json
+C:/Users/jorgl/OneDrive/Escritorio/ELYOS-Telemetry/build/appTelemetry2_autogen/include/../D2MWKIZDYH/moc_SerialHandler.cpp.json
+C:/Users/jorgl/OneDrive/Escritorio/ELYOS-Telemetry/build/appTelemetry2_autogen/include/../D2MWKIZDYH/moc_radialbar.cpp.json
