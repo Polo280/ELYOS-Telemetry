@@ -66,7 +66,7 @@ Rectangle {
                         font.pointSize: 15
                         font.bold: false
                         font.weight: Font.DemiBold
-                        color: "#3cd45c"
+                        color: "cyan"
                     }
                 }
 

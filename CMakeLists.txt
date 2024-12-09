@@ -50,7 +50,7 @@ qt_add_qml_module(appTelemetry2
     SOURCES CsvHandler.cpp
 
     RESOURCES Gubi.png
-    RESOURCES Thermometer.png
+    RESOURCES Thermometer.png 
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

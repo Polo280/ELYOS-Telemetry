@@ -17,6 +17,7 @@ import "qrc:/jsFiles/Globals.js" as GlobalsJs
 import "qrc:/jsFiles/mainAuxFunctions.js" as AuxFunctionsJs
 
 Window {
+    id: root
     /////// BASIC WINDOW PROPERTIES ///////
     width: 1500
     height: 780
@@ -28,6 +29,7 @@ Window {
     ////// Define App Variables //////
     // General control
     property bool isConnected: false
+    property var dataValues: []
     // Time control
     property int timeRunningAttempt: 0
     property int timeRunning: 0
@@ -267,7 +269,7 @@ Window {
 
         // Extract the different values from the message when a new string is received
         onNewDataReceived: {
-            let dataValues = message.split(",");
+            dataValues = message.split(",");
 
             // Update the variables for displaying data
             let performanceVals = [0.0, 0.0, 0.0, 0.0, 0.0];  // It seems like elements of the array cant be changed individually inside this block

@@ -126,7 +126,7 @@ Rectangle{
                                 if (text.length > 0) {
                                     placeholderText = "";
                                 } else {
-                                    placeholderText = qsTr("2 s");
+                                    placeholderText = qsTr("2");
                                 }
                             }
                         }
