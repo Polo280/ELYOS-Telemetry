@@ -79,7 +79,7 @@ Rectangle {
                     Layout.preferredHeight: ((parent.height / parent.rows) * generalTitleRowSpan)
 
                     // Style
-                    color: "#2c2c34"
+                    color: "#1c2424"
                     radius: 5
                     border.color: "#909090"
                     // border.width: 1

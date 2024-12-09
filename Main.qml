@@ -333,9 +333,13 @@ Window {
         }
     }
 
+
+    //////////////// WINDOW APP START ////////////////
     // When App starts, set the CSV path and write the header
     Component.onCompleted: {
         CsvHandler.openCsv("C:/Users/jorgl/OneDrive/Escritorio/testqt.csv");
-        CsvHandler.csvWrite("Speed,Current,Voltage\n")
+        CsvHandler.csvWrite("Speed,Current,Voltage\n");
     }
+
+    //////////////////////////////////////////////////
 }

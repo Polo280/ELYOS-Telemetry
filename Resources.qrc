@@ -2,6 +2,7 @@
     <qresource prefix="/Images">
         <file>Gubi.png</file>
         <file>Thermometer.png</file>
+        <file>MapMarker.svg</file>
     </qresource>
     <qresource prefix="/qmlFiles">
         <file>TopPanel.qml</file>

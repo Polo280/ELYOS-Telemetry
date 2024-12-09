@@ -74,6 +74,7 @@ Rectangle {
 
                 plugin: Plugin {
                     name: 'osm';
+                    // Load offline tiles (already loaded into resources.qrc file)
                     PluginParameter {
                         name: 'osm.mapping.offline.directory'
                         value: ':/offline_tiles/'
@@ -95,6 +96,27 @@ Rectangle {
                     angle: -90
                     origin.x: map.width / 2
                     origin.y: map.height / 2
+                }
+
+                // Add location point
+                MapQuickItem {
+                    id: marker
+                    anchorPoint.x: icon.width / 2
+                    anchorPoint.y: icon.height
+                    coordinate: QtPositioning.coordinate(39.799286, -86.235049)
+
+                    sourceItem: Image {
+                        id: icon
+                        source: "qrc:/Images/MapMarker.svg"
+                        width: 32
+                        height: 48
+                    }
+
+                    transform: Rotation{
+                        angle: 90
+                        origin.x: icon.width / 2
+                        origin.y: icon.height
+                    }
                 }
             }
         }
