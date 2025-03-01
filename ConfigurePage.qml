@@ -27,15 +27,15 @@ Rectangle {
     Connections{
         target: SerialHandler
 
-        onConnected:{
+        function onConnected(){
             // console.log("Succesfully connected")
             successfulConnection()
         }
-        onDisconnected:{
+        function onDisconnected(){
             // console.log("Disconnected")
             successfulDisconnection()
         }
-        onErrorOccurred:{
+        function onErrorOccurred(){
             // console.log(errorMessage)
         }
     }

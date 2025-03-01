@@ -3,6 +3,7 @@ import QtQuick.Layouts
 import QtQuick.Controls
 import QtLocation 5.15
 import QtPositioning 5.15
+import SerialHandler
 import "qrc:/jsFiles/mainAuxFunctions.js" as AuxFunctionsJs
 
 ///////////// MAP PANEL  /////////////
@@ -101,6 +102,7 @@ Rectangle {
                 // Add location point
                 MapQuickItem {
                     id: marker
+                    visible: false
                     anchorPoint.x: icon.width / 2
                     anchorPoint.y: icon.height
                     coordinate: QtPositioning.coordinate(39.799286, -86.235049)
@@ -117,6 +119,25 @@ Rectangle {
                         origin.x: icon.width / 2
                         origin.y: icon.height
                     }
+                }
+            }
+
+            Connections {
+                target: SerialHandler
+
+                function onNewDataReceived(message){
+                    // console.log(root.dataValues)
+                    // CHANGE THIS ACCORDINGLY TO SENDING FORMAT
+                    let latitude = root.dataValues[9];
+                    let longitude = root.dataValues[10];
+                    // console.log(latitude + "," + longitude)
+                    if(latitude === 0.0 || longitude === 0.0){
+                        marker.visible = false;
+                    }else{
+                        marker.visible = true;
+                    }
+
+                    marker.coordinate = QtPositioning.coordinate(latitude, longitude);
                 }
             }
         }
@@ -174,54 +195,64 @@ Rectangle {
                     //////// Internal Panel Layout ////////
                     ColumnLayout{
                         anchors.fill: parent
-                        anchors.margins: 1
-                        spacing: 18
+                        anchors.margins: 5
+                        spacing: 7
                         //////// Properties of individual labels to use a repeater ////////
                         ListModel {
                             id: timeControlModel
                             ListElement {labelText: "TIME CONTROL"}
                             ListElement {labelText: "RUNNING TIME:   "}
                             ListElement {labelText: "AVERAGE TIME/LAP:   "}
-                            ListElement {labelText: "PREDICTED TIME/LAP:   "}
+                            ListElement {labelText: "TARGET TIME/LAP:   "}
                         }
 
                         // REPEAT labels in this mini panel
                         Repeater {
-                            model: timeControlModel
+                            model: timeControlModel                            
                             delegate: Component {
 
                                 Rectangle{
-                                    Layout.preferredHeight: model.labelText === "TIME CONTROL" ? 50 : 20
+                                    Layout.preferredHeight: model.labelText === "TIME CONTROL" ? 50 : 30
                                     Layout.fillWidth: true
-                                    color: (model.labelText === "TIME CONTROL")? "#181818" : timeControlPanel.panelColor  // Change color for title container
-                                    border.color: model.labelText === "TIME CONTROL" ? "#959595" : color
+                                    color: (model.labelText === "TIME CONTROL")? "#181818" : "#272727"  // Change color for title container
+                                    border.color: model.labelText === "TIME CONTROL" ? "#959595" : "gray"
+
                                     radius: 5
 
+                                    // Labels
                                     Text {
                                         anchors.verticalCenter: parent.verticalCenter
                                         // Only center title
                                         anchors.horizontalCenter: model.labelText === "TIME CONTROL" ? parent.horizontalCenter : undefined
-
                                         // Text other than title
                                         x: model.labelText !== "TIME CONTROL" ? 10 : 0
-
                                         // Handle text logic
+                                        text: model.labelText
+                                        color: model.labelText === "TIME CONTROL" ? "#4977e3" : "#c1c5c9"
+                                        font.pointSize: model.labelText === "TIME CONTROL" ? 14 : 11
+                                        //font.weight: (model.labelText === "TIME CONTROL")? Font.Medium : Font.DemiBold
+                                    }
+
+                                    // Numbers
+                                    Text {
+                                        Layout.fillWidth: true
+                                        anchors.right: parent.right
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        font.pointSize: 11
+                                        rightPadding: 10
+                                        color: "#c1c5c9"
+
                                         text: {
                                             if(model.labelText === "AVERAGE TIME/LAP:   "){
-                                                "AVERAGE TIME/LAP:   " + AuxFunctionsJs.formatTime(avgSecsPerLap)
+                                                AuxFunctionsJs.formatTime(avgSecsPerLap)
                                             }else if (model.labelText === "RUNNING TIME:   "){
-                                                "RUNNING TIME:   " + AuxFunctionsJs.formatTime(runningTimeAttempt)
-                                            }else if (model.labelText === "PREDICTED TIME/LAP:   "){
-                                                "PREDICTED TIME/LAP:   " + AuxFunctionsJs.formatTime(predictedSecsPerLap)
-                                            }
-                                            else{
-                                                model.labelText
+                                                AuxFunctionsJs.formatTime(runningTimeAttempt)
+                                            }else if (model.labelText === "TARGET TIME/LAP:   "){
+                                                AuxFunctionsJs.formatTime(predictedSecsPerLap)
+                                            }else{
+                                                ""
                                             }
                                         }
-
-                                        color: model.labelText === "TIME CONTROL" ? "#4977e3" : "White"
-                                        font.pointSize: model.labelText === "TIME CONTROL" ? 14 : 12.5
-                                        font.weight: (model.labelText === "TIME CONTROL")? Font.Medium : Font.DemiBold
                                     }
                                 }
                             }

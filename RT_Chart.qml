@@ -11,13 +11,13 @@ Rectangle {
     property int time_axis_min: 0
     property int time_axis_max: 120  // Original max (to handle reset)
     property int time_axis_max_aux: 120
-    property int time_limit_increment: 10
+    property int time_limit_increment: 20
     // Amps
     property int current_min_limit: -5
     property int current_max_limit: 40
     // Volts
-    property int pitch_max_limit: 55
-    property int pitch_min_limit: 20
+    property int voltage_max_limit: 55
+    property int voltage_min_limit: 20
     ///////////////////////////////////
 
     ChartView {
@@ -27,7 +27,7 @@ Rectangle {
         // ChartView.ChartThemeHighContrast
         // ChartView.ChartThemeBlueCerulean
 
-        title: "RT DATA"
+        title: ""
         titleColor: "gray"
         animationOptions: ChartView.SeriesAnimations
 
@@ -40,13 +40,13 @@ Rectangle {
             axisY: currentAxis
         }
 
-        // pitch
+        // voltage
         SplineSeries {
-            id: pitchSeries
-            name: "Pitch (°)"
+            id: voltageSeries
+            name: "Voltage (V)"
             color: "cyan"
             axisX: xAxis
-            axisY: pitchAxis
+            axisY: voltageAxis
         }
 
         ValuesAxis {
@@ -57,10 +57,10 @@ Rectangle {
         }
 
         ValuesAxis {
-            id: pitchAxis
-            min: rt_chart.pitch_min_limit
-            max: rt_chart.pitch_max_limit
-            titleText: "Pitch (°)"
+            id: voltageAxis
+            min: rt_chart.voltage_min_limit
+            max: rt_chart.voltage_max_limit
+            titleText: "Voltage (V)"
         }
 
         ///// Time Axis /////
@@ -75,7 +75,7 @@ Rectangle {
             target: midLayoutMain
 
             function onMapResetButtonClicked(){
-                pitchSeries.clear();
+                voltageSeries.clear();
                 currentSeries.clear();
                 rt_chart.time_axis_min = 0;
                 rt_chart.time_axis_max_aux = rt_chart.time_axis_max;
@@ -93,8 +93,8 @@ Rectangle {
                     rt_chart.time_axis_min += rt_chart.time_limit_increment;
                 }
 
-                pitchSeries.append(root.timeRunningAttempt, Math.random() * (50 - 44) + 44);
-                currentSeries.append(root.timeRunningAttempt, root.dataValues[3] / 5);
+                voltageSeries.append(root.timeRunningAttempt, Math.random() * (50 - 44) + 44);
+                currentSeries.append(root.timeRunningAttempt, root.dataValues[5]);
             }
         }
     }

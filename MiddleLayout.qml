@@ -43,7 +43,10 @@ Rectangle {
             property int midPanel1Width: 840
 
             Layout.fillHeight: true
+            Layout.fillWidth: true
             Layout.preferredWidth: midPanel1Width
+            Layout.minimumWidth: midPanel1Width - 250
+            Layout.maximumWidth: midPanel1Width
             radius: 5
             color: "#181818"
             // border.color: "#d0d0d0"
@@ -57,8 +60,13 @@ Rectangle {
 
         ///////////// Middle Panel 2 - MAP /////////////
         Rectangle{
+            property int mapPanelWidth: 620
+
             Layout.fillHeight: true
             Layout.fillWidth: true
+            Layout.preferredWidth: mapPanelWidth
+            Layout.minimumWidth: mapPanelWidth - 200
+            Layout.maximumWidth: mapPanelWidth + 100
             radius: 10
             color: "#363640"
 

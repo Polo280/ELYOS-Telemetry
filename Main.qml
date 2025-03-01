@@ -275,44 +275,58 @@ Window {
             let performanceVals = [0.0, 0.0, 0.0, 0.0, 0.0];  // It seems like elements of the array cant be changed individually inside this block
             let accels = [0.0, 0.0, 0.0];
             let orientAngles = [0.0, 0.0, 0.0];
-            // Adjust this depending on telemetry data format (first item is j ust a validation character (s))
-            speed = dataValues[2];
-            distance = dataValues[3];
-            performanceVals[0] = dataValues[8];  // Current
-            performanceVals[1] = dataValues[9];  // Voltage
-            performanceVals[2] = dataValues[6];  // RPMS
-            performanceVals[3] = dataValues[7];  // Consumption
-            performanceVals[4] = dataValues[8];  // Efficiency
+            // Adjust this depending on telemetry data format (first item is just a validation character (s))
+            speed = dataValues[4];
+            distance = dataValues[4];
+            performanceVals[0] = dataValues[1];  // Current
+            performanceVals[1] = dataValues[2];  // Voltage
+            // CHANGE
+            performanceVals[2] = 0;  // RPMS
+            performanceVals[3] = 0;  // Consumption
+            performanceVals[4] = 0;  // Efficiency
             performanceValues = performanceVals;  // Copy the whole array, not single elements
-            accels[0] = dataValues[9];
-            accels[1] = dataValues[10];
-            accels[2] = dataValues[11];
+            accels[0] = dataValues[3];
+            accels[1] = dataValues[4];
+            accels[2] = dataValues[5];
             accelerations = accels;
-            orientAngles[0] = dataValues[9];
-            orientAngles[1] = dataValues[10];
-            orientAngles[2] = dataValues[11];
+            orientAngles[0] = dataValues[6];
+            orientAngles[1] = dataValues[7];
+            orientAngles[2] = dataValues[8];
             orientationAngles = orientAngles;
 
-            // Append data into record lists (ADJUST INDEXES AS NEEDED)
+            // Append data into record lists (ADJUST INDEXES AS NEEDED) when new data is received
             if(GlobalsJs.get_data_en){
-                GlobalsJs.speed_record.push(dataValues[6]); // Make some calculation here?
-                GlobalsJs.current_record.push(dataValues[8]);
-                GlobalsJs.voltage_record.push(dataValues[9]);
+                GlobalsJs.time_record.push(timeRunningAttempt)
+                GlobalsJs.current_record.push(dataValues[1]);
+                GlobalsJs.voltage_record.push(dataValues[2]);
+                // Accelerations
+                GlobalsJs.accelX_record.push(dataValues[3]);
+                GlobalsJs.accelY_record.push(dataValues[4]);
+                GlobalsJs.accelZ_record.push(dataValues[5]);
             }else{
                 // If get data is not enabled, discard the data that has been already stored
-                GlobalsJs.speed_record = [];
+                GlobalsJs.time_record = [];
                 GlobalsJs.current_record = [];
                 GlobalsJs.voltage_record = [];
+                // Accelerations
+                GlobalsJs.accelX_record = [];
+                GlobalsJs.accelY_record = [];
+                GlobalsJs.accelZ_record = [];
             }
 
             // Check if data is ready to be stored
             if(GlobalsJs.ready_to_save){
                 console.log("Ready")
                 // The order of the sublists has to be the same as you want to store in the CSV
-                GlobalsJs.main_data_store = [GlobalsJs.speed_record, GlobalsJs.current_record, GlobalsJs.voltage_record];
-                GlobalsJs.speed_record = [];
+                GlobalsJs.main_data_store = [GlobalsJs.time_record, GlobalsJs.current_record, GlobalsJs.voltage_record,
+                                             GlobalsJs.accelX_record, GlobalsJs.accelY_record, GlobalsJs.accelZ_record];
+                GlobalsJs.time_record = [];
                 GlobalsJs.current_record = [];
                 GlobalsJs.voltage_record = [];
+                // Accelerations
+                GlobalsJs.accelX_record = [];
+                GlobalsJs.accelY_record = [];
+                GlobalsJs.accelZ_record = [];
                 // Convert to string and save to CSV constantly
                 CsvHandler.csvWrite(AuxFunctionsJs.convertToCsv(GlobalsJs.main_data_store));
                 // Reset control variable
@@ -326,12 +340,12 @@ Window {
         id: csvHandle_conn
         target: CsvHandler
 
-        onCsvOpenSuccess: {
-            // console.log("Open success!");
+        function onCsvOpenSuccess() {
+            console.log("Open success!");
         }
 
-        onCsvOpenFailure: {
-           // console.log("Failed to open csv") ;
+        function onCsvOpenFailure(errorString) {
+           console.log("Failed to open csv") ;
         }
     }
 
@@ -340,7 +354,7 @@ Window {
     // When App starts, set the CSV path and write the header
     Component.onCompleted: {
         CsvHandler.openCsv("C:/Users/jorgl/OneDrive/Escritorio/testqt.csv");
-        CsvHandler.csvWrite("Speed,Current,Voltage\n");
+        CsvHandler.csvWrite("Time_s,Current_amps,Voltage_V,Accel X_m/s^2,Accel Y_m/s^2,Accel Z_m/s^2\n");
     }
 
     //////////////////////////////////////////////////

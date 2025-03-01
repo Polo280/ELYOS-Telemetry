@@ -29,7 +29,9 @@ void SerialHandler::handleError(void){
 void SerialHandler::readLine(){
     if(this->checkReadLine()){
         QString message = QString::fromUtf8(*data);
-        emit newDataReceived(message);
+        if(message.length() > 10){
+           emit newDataReceived(message);
+        }
         data->clear();
     }
 }

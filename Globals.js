@@ -9,7 +9,11 @@ var get_data_en = false;
 
 // Define variables to record and fill CSV with performance summary
 var main_data_store = [];
+var time_record = [];
 var speed_record = [];
+var accelX_record = [];
+var accelY_record = [];
+var accelZ_record = [];
 var voltage_record = [];
 var current_record = [];
 var lora_latency_record = [];

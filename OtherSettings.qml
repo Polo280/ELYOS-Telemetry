@@ -10,6 +10,7 @@ Rectangle{
     border.color: configurePanel.borderColor
     radius: 5
 
+
     GridLayout{
         anchors.fill: parent
         anchors.margins: 2
