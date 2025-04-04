@@ -152,7 +152,7 @@ Rectangle {
                     weight: Font.DemiBold
                     pointSize: 20
                 }
-                suffixText: " mi/h"
+                suffixText: " km/h"
                 textColor: barColor
             }
         }
@@ -196,7 +196,7 @@ Rectangle {
                     weight: Font.DemiBold
                     pointSize: 20
                 }
-                suffixText: " mi"
+                suffixText: " km"
                 textColor: barColor
             }
         }

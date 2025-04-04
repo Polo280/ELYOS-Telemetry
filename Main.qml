@@ -31,12 +31,13 @@ Window {
     property bool isConnected: false
     property var dataValues: []
     // Time control
+    property int samplingRateHz: 2  // Adjust depending on physical module
     property int timeRunningAttempt: 0
     property int timeRunning: 0
     property bool timePaused: true
     property bool finishedRace: false
     // Race settings
-    property int maxNumberLaps: 5
+    property int maxNumberLaps: 4
     property int attemptAvailableSecs: 1200
     // Current Status
     property int remainingTime: attemptAvailableSecs
@@ -140,7 +141,7 @@ Window {
                         // Has only effect when timer is not paused
                         if(!timePaused && !finishedRace){
                             // Evaluate current lap to decide if finish race
-                            if(currentLaps > 3){
+                            if(currentLaps > 2){
                                 finishedRace = true;
                             }
 
@@ -193,6 +194,7 @@ Window {
             BottomPanel{
                 id: bottomPanel1
                 telemetryConnected: isConnected
+                // BATTERY CHARGE LOGIC HERE
                 batteryPercentage: Math.ceil(midLayoutMain.performanceValues[1] * 2)   // ASSUMING BATTERY IS 50V NOMINAL
                                                                                    // Apply formula to find ratio
             }
@@ -275,34 +277,49 @@ Window {
             let performanceVals = [0.0, 0.0, 0.0, 0.0, 0.0];  // It seems like elements of the array cant be changed individually inside this block
             let accels = [0.0, 0.0, 0.0];
             let orientAngles = [0.0, 0.0, 0.0];
+
             // Adjust this depending on telemetry data format (first item is just a validation character (s))
-            speed = dataValues[4];
-            distance = dataValues[4];
-            performanceVals[0] = dataValues[1];  // Current
-            performanceVals[1] = dataValues[2];  // Voltage
-            // CHANGE
-            performanceVals[2] = 0;  // RPMS
-            performanceVals[3] = 0;  // Consumption
-            performanceVals[4] = 0;  // Efficiency
-            performanceValues = performanceVals;  // Copy the whole array, not single elements
-            accels[0] = dataValues[3];
-            accels[1] = dataValues[4];
-            accels[2] = dataValues[5];
+            const WHEEL_RADIUS_IN = 11;
+            const RPM_TO_KMH = (2 * Math.PI) * WHEEL_RADIUS_IN * 0.0254 * 0.06;
+            let rpms = dataValues[12];
+            speed = (rpms > 0)? rpms *  RPM_TO_KMH  : 0;   // Speed for gauge
+            distance = dataValues[13] * ((2 * Math.PI) * WHEEL_RADIUS_IN * 0.0254 / 1000);   // Revs * circunference
+
+            // Power
+            performanceVals[0] = dataValues[0];  // Current
+            performanceVals[1] = dataValues[1];  // Voltage
+            // Speed
+            performanceVals[2] = rpms;  // RPMS
+            // More complex variables
+            var instantaneous_power = dataValues[0] * dataValues[1];   // P = VI
+            performanceVals[3] += (instantaneous_power * (1 / samplingRateHz));  // Consumption
+            performanceVals[4] = (performanceVals[3] === 0)? 0.0 : distance / performanceVals[3];  // Efficiency
+
+            // Update GUI labels
+            performanceValues = performanceVals;
+            accels[0] = dataValues[4];  // X
+            accels[1] = dataValues[3];  // Y
+            accels[2] = dataValues[2];  // Z
             accelerations = accels;
-            orientAngles[0] = dataValues[6];
-            orientAngles[1] = dataValues[7];
-            orientAngles[2] = dataValues[8];
+            orientAngles[0] = dataValues[5];
+            orientAngles[1] = dataValues[6];
+            orientAngles[2] = dataValues[7];
             orientationAngles = orientAngles;
 
             // Append data into record lists (ADJUST INDEXES AS NEEDED) when new data is received
             if(GlobalsJs.get_data_en){
-                GlobalsJs.time_record.push(timeRunningAttempt)
-                GlobalsJs.current_record.push(dataValues[1]);
-                GlobalsJs.voltage_record.push(dataValues[2]);
+                GlobalsJs.time_record.push(timeRunningAttempt / samplingRateHz)  // Adjust depending on expected sampling rate (Hz)
+                GlobalsJs.current_record.push(dataValues[0]);
+                GlobalsJs.voltage_record.push(dataValues[1]);
                 // Accelerations
-                GlobalsJs.accelX_record.push(dataValues[3]);
-                GlobalsJs.accelY_record.push(dataValues[4]);
-                GlobalsJs.accelZ_record.push(dataValues[5]);
+                GlobalsJs.accelX_record.push(dataValues[2]);
+                GlobalsJs.accelY_record.push(dataValues[3]);
+                GlobalsJs.accelZ_record.push(dataValues[4]);
+                // GPS Data
+                GlobalsJs.latitude_record.push(dataValues[8]);
+                GlobalsJs.longitude_record.push(dataValues[9]);
+                // RPMs
+                GlobalsJs.rpm_record.push(dataValues[12]);
             }else{
                 // If get data is not enabled, discard the data that has been already stored
                 GlobalsJs.time_record = [];
@@ -312,6 +329,11 @@ Window {
                 GlobalsJs.accelX_record = [];
                 GlobalsJs.accelY_record = [];
                 GlobalsJs.accelZ_record = [];
+                // GPS
+                GlobalsJs.latitude_record = [];
+                GlobalsJs.longitude_record = [];
+                // RPMs
+                GlobalsJs.rpm_record = [];
             }
 
             // Check if data is ready to be stored
@@ -319,7 +341,8 @@ Window {
                 console.log("Ready")
                 // The order of the sublists has to be the same as you want to store in the CSV
                 GlobalsJs.main_data_store = [GlobalsJs.time_record, GlobalsJs.current_record, GlobalsJs.voltage_record,
-                                             GlobalsJs.accelX_record, GlobalsJs.accelY_record, GlobalsJs.accelZ_record];
+                                             GlobalsJs.accelX_record, GlobalsJs.accelY_record, GlobalsJs.accelZ_record,
+                                             GlobalsJs.rpm_record, GlobalsJs.latitude_record, GlobalsJs.longitude_record];
                 GlobalsJs.time_record = [];
                 GlobalsJs.current_record = [];
                 GlobalsJs.voltage_record = [];
@@ -327,6 +350,11 @@ Window {
                 GlobalsJs.accelX_record = [];
                 GlobalsJs.accelY_record = [];
                 GlobalsJs.accelZ_record = [];
+                // GPS
+                GlobalsJs.latitude_record = [];
+                GlobalsJs.longitude_record = [];
+                // RPMs
+                GlobalsJs.rpm_record = [];
                 // Convert to string and save to CSV constantly
                 CsvHandler.csvWrite(AuxFunctionsJs.convertToCsv(GlobalsJs.main_data_store));
                 // Reset control variable
@@ -354,7 +382,7 @@ Window {
     // When App starts, set the CSV path and write the header
     Component.onCompleted: {
         CsvHandler.openCsv("C:/Users/jorgl/OneDrive/Escritorio/testqt.csv");
-        CsvHandler.csvWrite("Time_s,Current_amps,Voltage_V,Accel X_m/s^2,Accel Y_m/s^2,Accel Z_m/s^2\n");
+        CsvHandler.csvWrite("Time_s,Current_amps,Voltage_V,Accel X_m/s^2,Accel Y_m/s^2,Accel Z_m/s^2,RPM,Latitude,Longitude\n");
     }
 
     //////////////////////////////////////////////////

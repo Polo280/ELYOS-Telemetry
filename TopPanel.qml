@@ -219,7 +219,7 @@ Rectangle {
     }
 
     onAttemptCurrentLapsChanged: {
-        adaptedLaps = (attemptCurrentLaps >= 4)? 5 : attemptCurrentLaps + 1;
+        adaptedLaps = (attemptCurrentLaps >= 3)? 4 : attemptCurrentLaps + 1;  // Changed here (subtracted 1 lap)
     }
 
     // Change the color of remaining Time label

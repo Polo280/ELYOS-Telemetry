@@ -128,8 +128,8 @@ Rectangle {
                 function onNewDataReceived(message){
                     // console.log(root.dataValues)
                     // CHANGE THIS ACCORDINGLY TO SENDING FORMAT
-                    let latitude = root.dataValues[9];
-                    let longitude = root.dataValues[10];
+                    let latitude = root.dataValues[8];
+                    let longitude = root.dataValues[9];
                     // console.log(latitude + "," + longitude)
                     if(latitude === 0.0 || longitude === 0.0){
                         marker.visible = false;
@@ -336,7 +336,7 @@ Rectangle {
                                     ListElement { name: "LAP 2"; index: 1; completed: false}
                                     ListElement { name: "LAP 3"; index: 2; completed: false}
                                     ListElement { name: "LAP 4"; index: 3; completed: false}
-                                    ListElement { name: "LAP 5"; index: 4; completed: false}
+                                   // ListElement { name: "LAP 5"; index: 4; completed: false}
                                 }
 
                                 delegate: Rectangle {

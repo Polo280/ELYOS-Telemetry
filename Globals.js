@@ -11,9 +11,16 @@ var get_data_en = false;
 var main_data_store = [];
 var time_record = [];
 var speed_record = [];
+// Accelerations
 var accelX_record = [];
 var accelY_record = [];
 var accelZ_record = [];
+// Power
 var voltage_record = [];
 var current_record = [];
+var rpm_record = [];
+// GPS
+var latitude_record = [];
+var longitude_record = [];
+// Others
 var lora_latency_record = [];

@@ -16,8 +16,8 @@ Rectangle {
     property int current_min_limit: -5
     property int current_max_limit: 40
     // Volts
-    property int voltage_max_limit: 55
-    property int voltage_min_limit: 20
+    property int voltage_max_limit: 40
+    property int voltage_min_limit: 0
     ///////////////////////////////////
 
     ChartView {
@@ -93,8 +93,8 @@ Rectangle {
                     rt_chart.time_axis_min += rt_chart.time_limit_increment;
                 }
 
-                voltageSeries.append(root.timeRunningAttempt, Math.random() * (50 - 44) + 44);
-                currentSeries.append(root.timeRunningAttempt, root.dataValues[5]);
+                voltageSeries.append(root.timeRunningAttempt, root.dataValues[2]);
+                currentSeries.append(root.timeRunningAttempt, root.dataValues[1]);
             }
         }
     }

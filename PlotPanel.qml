@@ -81,7 +81,6 @@ Rectangle {
 
                     ////// PLOT COMPONENT //////
                     RT_Chart{
-
                     }
                 }
             }
