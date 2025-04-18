@@ -1,0 +1,9 @@
+../Core/Src/NMEA_Parser.c:5:6:processGPGGA	16
+../Core/Src/NMEA_Parser.c:78:6:processGPRMC	28
+../Core/Src/NMEA_Parser.c:193:6:processGPGLL	9
+../Core/Src/NMEA_Parser.c:239:6:processGPVTG	8
+../Core/Src/NMEA_Parser.c:281:6:processGPGSA	5
+../Core/Src/NMEA_Parser.c:311:6:processGPGSV	6
+../Core/Src/NMEA_Parser.c:345:6:processGPZDA	8
+../Core/Src/NMEA_Parser.c:390:6:splitNMEASentences	4
+../Core/Src/NMEA_Parser.c:409:6:parseGPSData	3

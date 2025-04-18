@@ -1,0 +1,2 @@
+../Core/Src/adc.c:7:6:MX_ADC1_Init	2
+../Core/Src/adc.c:36:10:pollFromChannelADC	1
